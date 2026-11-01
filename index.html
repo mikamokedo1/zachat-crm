@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZaChat — Tài Liệu Tổng Quan Giải Pháp Quản Lý Đa Tài Khoản Zalo, Tồn Kho &amp; CRM</title>
+  <meta name="description" content="Tài liệu hướng dẫn triển khai ZaChat: quản lý không giới hạn tài khoản Zalo trên một màn hình (Web, Desktop, Mobile), lên đơn trừ tồn kho trong chat và tự khớp chuyển khoản SePay." />
+  <style>
+    :root { --primary: #0068ff; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #475569; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+    header { background: linear-gradient(135deg, #0052cc, #0068ff); color: #fff; padding: 3rem 1.5rem; text-align: center; }
+    header h1 { margin: 0 0 0.75rem; font-size: 2rem; }
+    header p { max-width: 720px; margin: 0 auto 1.5rem; opacity: 0.95; }
+    .cta-group { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 0.75rem 1.4rem; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .btn-white { background: #fff; color: #0052cc; }
+    .btn-outline { border: 1.5px solid rgba(255,255,255,0.85); color: #fff; }
+    main { max-width: 920px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+    section { background: var(--card); border-radius: 12px; padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(15,23,42,0.08); }
+    h2 { margin-top: 0; color: #0052cc; font-size: 1.35rem; }
+    ul { padding-left: 1.25rem; }
+    li { margin-bottom: 0.6rem; }
+    a { color: var(--primary); }
+    footer { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 1.5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ZaChat — Quản Lý Đa Nick Zalo, Bán Hàng &amp; CRM Toàn Diện</h1>
+    <p>Hợp nhất không giới hạn tài khoản Zalo trên một giao diện đồng bộ xuyên suốt Web, Windows, macOS, iOS và Android dành cho chủ shop, đội sale và phòng CSKH tại Việt Nam.</p>
+    <div class="cta-group">
+      <a class="btn btn-white" href="https://zachat.vn">Trang chủ ZaChat.vn</a>
+      <a class="btn btn-outline" href="https://app.zachat.vn">Mở Web App (app.zachat.vn)</a>
+      <a class="btn btn-outline" href="https://zachat.vn/tai-ung-dung">Tải Ứng Dụng Desktop &amp; Mobile</a>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. Kiến trúc hộp thư hợp nhất cho đội ngũ bán hàng đa tài khoản</h2>
+      <p>Khi doanh nghiệp vận hành từ 3 đến hàng chục tài khoản Zalo tư vấn khách hàng, việc đăng nhập rời rạc trên nhiều trình duyệt và điện thoại dễ dẫn đến bỏ sót tin nhắn, trùng khách hoặc mất lịch sử hội thoại khi nhân sự nghỉ việc. <a href="https://zachat.vn">Phần mềm quản lý đa tài khoản Zalo ZaChat</a> giải quyết triệt để bài toán này bằng cơ chế kết nối QR nhanh và gom toàn bộ luồng tin nhắn về một màn hình điều phối duy nhất.</p>
+      <ul>
+        <li><strong>Đồng bộ đa thiết bị tức thì:</strong> Nhân viên trực tại văn phòng trên máy tính Windows/macOS hoặc quản lý theo dõi từ xa trên điện thoại iOS/Android đều nhìn thấy trạng thái hội thoại theo thời gian thực.</li>
+        <li><strong>Phân quyền nhân viên chi tiết:</strong> Chủ shop phân chia tài khoản Zalo hoặc phân luồng hội thoại cho từng sale mà không cần giao mật khẩu gốc, kèm nhật ký thao tác minh bạch.</li>
+        <li><strong>Gắn thẻ CRM &amp; lọc phễu khách hàng:</strong> Đánh dấu trạng thái tư vấn (Khách mới, Chờ chuyển khoản, Đã chốt đơn, VIP, Bảo hành) ngay trên từng dòng chat.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Lên đơn, trừ tồn kho, quản lý công nợ và tự khớp chuyển khoản SePay</h2>
+      <p>Khác với các công cụ gộp khung chat đơn thuần, <a href="https://zachat.vn">hệ thống ZaChat CRM</a> tích hợp trọn vẹn nghiệp vụ thương mại điện tử và bán buôn ngay cạnh cửa sổ nhắn tin:</p>
+      <ul>
+        <li><strong>Tạo đơn &amp; trừ kho trực tiếp:</strong> Chọn sản phẩm, kiểm tra số lượng tồn kho thực tế và xuất phiếu đơn hàng ngay trong lúc đang chat với khách.</li>
+        <li><strong>Tự động đối soát thanh toán SePay:</strong> Ghi nhận biến động chuyển khoản ngân hàng qua mã QR thanh toán và tự động cập nhật trạng thái đơn đã thu tiền, giảm sai sót kiểm tra ảnh chụp màn hình thủ công.</li>
+        <li><strong>Sổ công nợ khách sỉ &amp; đại lý:</strong> Theo dõi hạn mức công nợ phải thu, lịch sử thanh toán từng đợt của từng khách hàng gắn liền với hồ sơ Zalo của họ.</li>
+        <li><strong>Chăm sóc khách hàng hàng loạt có giãn cách:</strong> Thiết lập nhịp gửi thông báo ưu đãi, nhắc lịch hẹn với độ trễ giãn cách thông minh giúp duy trì kết nối ổn định.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Liên kết truy cập &amp; tải bộ cài đặt chính thức</h2>
+      <p>Khách hàng mới được hỗ trợ <strong>dùng thử miễn phí 14 ngày</strong> đầy đủ tính năng trên mọi nền tảng:</p>
+      <ul>
+        <li>Website thông tin sản phẩm &amp; bảng giá: <a href="https://zachat.vn">https://zachat.vn</a></li>
+        <li>Truy cập trực tiếp trên trình duyệt: <a href="https://app.zachat.vn">https://app.zachat.vn</a></li>
+        <li>Trang tải bộ cài đặt Windows &amp; macOS: <a href="https://zachat.vn/tai-ung-dung">https://zachat.vn/tai-ung-dung</a></li>
+        <li>Ứng dụng iOS trên Apple App Store: <a href="https://apps.apple.com/us/app/za-chat/id6816288631">ZaChat cho iPhone &amp; iPad</a></li>
+        <li>Ứng dụng Android trên Google Play: <a href="https://play.google.com/store/apps/details?id=com.mikamokedo.zchat">ZaChat cho điện thoại Android</a></li>
+        <li>Kênh video hướng dẫn chính thức: <a href="https://www.youtube.com/@ZaChatVN">YouTube @ZaChatVN</a> | <a href="https://www.facebook.com/zachat.vn/">Fanpage ZaChat.vn</a> | <a href="https://www.tiktok.com/@zachat.vn">TikTok @zachat.vn</a></li>
+      </ul>
+      <p>Liên hệ hỗ trợ kỹ thuật &amp; tư vấn triển khai: <strong>support@zachat.vn</strong> — Hotline: <strong>+84 888 222 293</strong>.</p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; ZaChat (<a href="https://zachat.vn">zachat.vn</a>) — Giải pháp quản lý đa tài khoản Zalo, bán hàng, tồn kho &amp; CRM toàn diện.
+  </footer>
+</body>
+</html>
