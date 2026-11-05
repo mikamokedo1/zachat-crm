@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cách Đồng Bộ Tin Nhắn Zalo Ngoại Tuyến (Local-First SQLite) Giúp Tra Cứu Đơn Hàng &amp; Công Nợ Tức Thì — ZaChat</title>
+  <meta name="description" content="Giải pháp lưu trữ và đồng bộ tin nhắn Zalo ngoại tuyến bằng kiến trúc Local-first SQLite trên ZaChat giúp chủ shop tra cứu lịch sử đơn hàng, hình ảnh biên lai và sổ công nợ tức thì ngay cả khi mạng chập chờn.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mikamokedo1.github.io/zachat-crm/dong-bo-tin-nhan-zalo-offline-sqlite.html">
+  <style>
+    :root { --primary: #0068ff; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #475569; --border: #e2e8f0; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.7; color: var(--text); background: var(--bg); margin: 0; padding: 0; }
+    header { background: linear-gradient(135deg, #0047b3, #0068ff); color: #fff; padding: 2.5rem 1.25rem; text-align: center; }
+    header h1 { max-width: 880px; margin: 0 auto 0.75rem; font-size: 1.85rem; line-height: 1.35; }
+    header p { max-width: 760px; margin: 0 auto; opacity: 0.92; font-size: 1.05rem; }
+    nav.breadcrumb { max-width: 880px; margin: 1.25rem auto 0; padding: 0 1.25rem; font-size: 0.95rem; }
+    nav.breadcrumb a { color: var(--primary); text-decoration: none; font-weight: 500; }
+    main { max-width: 880px; margin: 1.25rem auto 3rem; padding: 2rem; background: var(--card); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); }
+    h2 { color: #0f172a; border-bottom: 2px solid #eff6ff; padding-bottom: 0.5rem; margin-top: 2rem; font-size: 1.35rem; }
+    a { color: var(--primary); font-weight: 600; text-decoration: underline; }
+    ul, ol { padding-left: 1.4rem; }
+    li { margin-bottom: 0.65rem; }
+    .callout { background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.1rem 1.25rem; border-radius: 6px; margin: 1.5rem 0; }
+    code { background: #f1f5f9; padding: 0.15rem 0.45rem; border-radius: 4px; font-weight: 600; color: #0f172a; }
+    footer { text-align: center; padding: 1.5rem; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Cách Đồng Bộ Tin Nhắn Zalo Ngoại Tuyến (Local-First SQLite) Giúp Tra Cứu Đơn Hàng &amp; Công Nợ Tức Thì — ZaChat</h1>
+    <p>Kiến trúc lưu trữ cục bộ kết hợp đồng bộ đám mây thời gian thực giúp đội ngũ Sale &amp; CSKH không bao giờ mất lịch sử giao dịch khi đổi máy hoặc mất kết nối mạng tạm thời.</p>
+  </header>
+
+  <nav class="breadcrumb">
+    <a href="https://mikamokedo1.github.io/zachat-crm/">← Trang chủ tài liệu ZaChat CRM</a> ·
+    <a href="https://mikamokedo1.github.io/zachat-crm/tai-ung-dung.html">Tải &amp; Cài đặt đa nền tảng</a> ·
+    <a href="https://mikamokedo1.github.io/zachat-crm/chatbot-ai-tu-dong-zalo.html">Trả lời tự động 24/7</a> ·
+    <a href="https://zachat.vn">Website ZaChat.vn</a>
+  </nav>
+
+  <main>
+    <p>Đối với các cửa hàng bán lẻ trực tuyến, xưởng sỉ thời trang, nhà thuốc và doanh nghiệp phân phối sử dụng từ 5 đến 30 tài khoản Zalo bán hàng, lịch sử tin nhắn thỏa thuận giá, ảnh chụp mẫu hàng đã đặt và biên lai thanh toán từ nhiều tháng trước là căn cứ quan trọng nhất để đối chiếu khi khách đặt lại hoặc phát sinh bảo hành. Tuy nhiên, khi nhân viên chuyển đổi trình duyệt làm việc hoặc thay điện thoại mới, các đoạn hội thoại cũ rất dễ bị thất lạc hoặc hiển thị trống trơn do chưa được sao lưu đồng bộ.</p>
+
+    <h2>1. Vì sao các cửa hàng thường xuyên mất lịch sử chat và ảnh đơn hàng cũ trên Zalo?</h2>
+    <ul>
+      <li><strong>Bộ nhớ đệm trình duyệt bị xóa tự động:</strong> Khi đăng nhập tài khoản Zalo trên trình duyệt web thông thường, dữ liệu hội thoại chỉ lưu tạm thời trong bộ nhớ trình duyệt của máy tính đó. Mỗi lần nâng cấp máy, cài lại hệ điều hành hoặc nhân viên ca tối ngồi sang máy tính khác, toàn bộ các tin nhắn trước đó không thể tìm kiếm đầy đủ.</li>
+      <li><strong>Tốc độ tìm kiếm chậm khi số lượng hội thoại lên tới hàng chục nghìn khách:</strong> Việc cuộn ngược từng khung chat để tìm lại đơn hàng cách đây 3–6 tháng trên kết nối mạng yếu làm tiêu tốn nhiều thời gian của bộ phận chăm sóc khách hàng.</li>
+      <li><strong>Rời rạc giữa nội dung tin nhắn và hồ sơ công nợ:</strong> Ngay cả khi tìm lại được đoạn chat cũ, nhân viên vẫn phải mở file bảng tính riêng để kiểm tra xem khách sỉ đó còn nợ bao nhiêu tiền từ đợt nhập hàng trước.</li>
+    </ul>
+
+    <h2>2. Kiến trúc Local-First SQLite kết hợp đồng bộ máy chủ trên ZaChat hoạt động như thế nào?</h2>
+    <p>Để giải quyết triệt để bài toán tốc độ lẫn tính toàn vẹn dữ liệu, nền tảng <a href="https://zachat.vn">ZaChat</a> thiết kế cơ sở dữ liệu theo mô hình <strong>Local-first SQLite</strong> trên cả ứng dụng Desktop (Windows, macOS) và ứng dụng di động (iOS, Android) kết hợp đồng bộ thời gian thực với máy chủ trung tâm:</p>
+    <ol>
+      <li><strong>Truy xuất và tìm kiếm tức thì không độ trễ (0ms Latency):</strong> Toàn bộ danh sách hội thoại, nội dung tin nhắn, nhãn phân loại CRM (Tags) và thông tin khách hàng được lập chỉ mục ngay trong cơ sở dữ liệu <code>SQLite</code> cục bộ trên thiết bị. Khi nhân viên gõ tên khách, số điện thoại hoặc mã sản phẩm, kết quả hiển thị ngay lập tức mà không phải chờ tải từng trang từ mạng.</li>
+      <li><strong>Hoạt động ổn định ngay cả khi đường truyền Internet chập chờn:</strong> Trong trường hợp mạng văn phòng hoặc kết nối 4G khi đi thị trường bị gián đoạn ngắn hạn, nhân viên vẫn mở xem được toàn bộ lịch sử trò chuyện, kiểm tra đơn hàng cũ và xem sổ công nợ đã lưu trên <a href="https://zachat.vn">phần mềm quản lý và lưu trữ tin nhắn đa nick Zalo</a>. Ngay khi có mạng trở lại, cơ chế đồng bộ gia tăng (Incremental Delta Sync) sẽ tự động cập nhật các tin nhắn mới nhất.</li>
+      <li><strong>Gắn liền lịch sử chat với đơn hàng, tồn kho và đối soát SePay:</strong> Mọi đơn hàng được tạo trong khung chat, số lượng trừ tồn kho và lịch sử chuyển khoản ngân hàng tự động khớp qua SePay đều được lưu trữ xuyên suốt bên cạnh hội thoại của từng khách hàng, giúp nhân viên ở bất kỳ ca trực nào cũng nắm bắt trọn vẹn hồ sơ giao dịch.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>Trải nghiệm đồng bộ đa thiết bị miễn phí 14 ngày:</strong> Chủ shop có thể đăng nhập làm việc ngay trên trình duyệt tại <a href="https://app.zachat.vn">https://app.zachat.vn</a> hoặc <a href="https://zachat.vn/tai-ung-dung">tải ứng dụng ZaChat cho Windows, macOS, iOS &amp; Android</a> để bảo vệ toàn diện dữ liệu khách hàng trên không giới hạn tài khoản Zalo.
+    </div>
+
+    <h2>3. Hệ thống tài liệu hướng dẫn vận hành ZaChat CRM liên quan</h2>
+    <ul>
+      <li><a href="https://mikamokedo1.github.io/zachat-crm/">Tổng quan kiến trúc hộp thư hợp nhất đa tài khoản Zalo, bán hàng &amp; CRM — ZaChat</a></li>
+      <li><a href="https://mikamokedo1.github.io/zachat-crm/tai-ung-dung.html">Hướng dẫn tải và cài đặt ZaChat cho Windows, macOS (Apple Silicon &amp; Intel), iOS và Android</a></li>
+      <li><a href="https://mikamokedo1.github.io/zachat-crm/chatbot-ai-tu-dong-zalo.html">Thiết lập trả lời tự động 24/7 &amp; kịch bản CSKH theo khung giờ trên nhiều nick Zalo</a></li>
+      <li><a href="https://zachatvn.mataroa.blog/blog/so-sanh-hieu-qua-cham-soc-khach-hang-cu-bang-broadcast-zalo-co-gian-cach-so-voi-chay-quang-cao-tim-khach-moi/">So sánh hiệu quả chăm sóc khách hàng cũ bằng Broadcast Zalo có giãn cách so với chạy quảng cáo tìm khách mới</a></li>
+      <li><strong>Liên hệ hỗ trợ kỹ thuật:</strong> Email <a href="mailto:support@zachat.vn">support@zachat.vn</a> · Hotline: <strong>0888222293</strong> (+84 888 222 293) · Địa điểm: Hà Nội, Việt Nam.</li>
+    </ul>
+  </main>
+
+  <footer>
+    © 2026 ZaChat — Giải pháp quản lý nhiều tài khoản Zalo, bán hàng &amp; CRM. Website: <a href="https://zachat.vn">https://zachat.vn</a>
+  </footer>
+</body>
+</html>
